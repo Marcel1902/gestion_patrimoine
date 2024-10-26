@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Se Connecter</title>
+  <meta charset="utf-8">
+  <link href="{% static 'ecole/assets/images/logos.png' %}" rel="shortcut icon"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'patrimoine/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'patrimoine/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'patrimoine/css/style.css' %}">
+</head>
+<body>
+    <div class="container shadow p-5" style="background-color: rgb(0, 0, 0, .05); border-radius: 10px;">
+        <form method="POST">
+            {% csrf_token %}
+            <h4 class="text-center text-light"> Se Connecter</h4>
+            <!--Recuperation des messages d'erreur-->
+            {% if messages %}
+                <div class="messages text-center">
+                    {% for message in messages %}
+                        <span class="error text-center" style="color: red;"> {{ message }} </span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="mb-3 mt-3">
+                <label class="form-label text-light" for="nom">Nom d'utilisateur</label><br>
+                <input class="form-control" type="text" id="nom" name="nom" placeholder="entrer votre nom d'utilisateur">
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-light" for="password">Votre mot de passe</label><br>
+                <input class="form-control" type="password" id="password" name="password" placeholder="votre mot de passe">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Login">
+        </form>
+    </div>
+</body>
