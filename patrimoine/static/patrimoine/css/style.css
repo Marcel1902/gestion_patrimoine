@@ -1,0 +1,23 @@
+body{
+background: url("../src/wallpaper.png");
+background-size: cover;
+background-repeat: no-repeat;
+}
+
+.form-control{
+    width: 100%;
+    background:transparent;
+    border:none;
+    border-bottom: 1px solid aliceblue;
+    color: white;
+}
+
+.container{
+margin-top: 20vh;
+width:35%;
+}
+
+.btn{
+width: 25%;
+margin-left: 36%;
+}

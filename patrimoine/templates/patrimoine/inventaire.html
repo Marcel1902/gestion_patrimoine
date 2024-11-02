@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Inventaire</title>
+  <meta charset="utf-8">
+  <link href="{% static 'ecole/assets/images/logos.png' %}" rel="shortcut icon"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'patrimoine/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'patrimoine/css/bootstrap.min.css' %}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!--Barre de Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                INVENTAIRE
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars text-light"></i></button>
+            <div class="collapse navbar-collapse" id="navbar1">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'afficher_regions' %}">Home</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'pv_recensement' service.id %}">PV Recensement</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'pv_evaluation' service.id %}">PV Evaluation</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'etat_appreciatif' service.id %}">Etat Appreciatif</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'inventaire' service.id %}">Inventaire</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'ordre_entree' service.id %}">Ordre d'entrée</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'ordre_sortie' service.id %}">Ordre de sortie</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'attestation' service.id %}">Attestation</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'recapitulatif_inventaire' service.id %}">Recapitulatifs</a>
+                    </li>
+                </ul>
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'logout' %}" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Se deconnecter"><i class="fas fa-user p-2" style="padding: 2px; border:1px solid; border-radius: 50%;"></i></a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div> 
+        </div>
+    </nav>   
+    <!-- Fin Barre de Navigation-->
+     <!--Section pour la barre de recherche, les filtres, le bouton d'ajout, et le bouton de telechargement-->
+<div class="container-fluid mt-3">
+    <div class="bar row d-flex flex-row">
+        <div class="filter col d-flex flex-row" style="height: 5vh;">
+            <input type="text" class="form-control" style="width: 50%; height: 5vh; margin-right: 5px;" id="Search" placeholder="search..." name="search">
+        </div>
+        <div class="col d-flex flex-row">
+          <form method="get" action="" id="global-filters-form">
+            <label for="nomenclature">Nomenclature :</label>
+            <select name="nomenclature" id="nomenclature" onchange="document.getElementById('global-filters-form').submit();">
+                <option value="">Tous</option>
+                {% for nomenclature in nomenclature_list %}
+                    <option value="{{ nomenclature }}" {% if selected_nomenclature == nomenclature|stringformat:"s" %}selected{% endif %}>
+                        {{ nomenclature }}
+                    </option>
+                {% endfor %}
+            </select>
+        
+            <label for="annee_exercice">Année d'exercice :</label>
+            <select name="annee_exercice" id="annee_exercice" onchange="document.getElementById('global-filters-form').submit();">
+                <option value="">Tous</option>
+                {% for annee in annee_exercice_list %}
+                    <option value="{{ annee }}" {% if selected_annee_exercice == annee|stringformat:"s" %}selected{% endif %}>
+                        {{ annee }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>        
+        </div>
+        <div class=" col bouton me-auto d-flex justify-content-end align-items-right">
+            <a class="btn btn-success text-light mb-3 me-2" href="{% url 'ajout_inventaire' service.id %}"><i class="fa-solid fa-plus fa-lg" style="font-size: 15px; padding-right: 5px"></i>Ajouter</a>
+            <form method="get" action="{% url 'export_inventaire' service.id %}">
+              <!-- Garder les filtres appliqués -->
+              <input type="hidden" name="nomenclature" value="{{ selected_nomenclature }}">
+              <input type="hidden" name="annee_exercice" value="{{ selected_annee_exercice }}">
+          
+              <!-- Bouton de téléchargement -->
+              <div class="dropdown">
+                  <button class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-download"></i> Télécharger</button>
+                  <div class="dropdown-menu">
+                      <button class="btn btn-info m-1" type="submit" name="format" value="pdf">Exporter en PDF</button>
+                      <button class="btn btn-info m-1" type="submit" name="format" value="excel">Exporter en Excel</button>
+                  </div>
+              </div>
+          </form>
+        </div>
+    </div>     
+    <!--Section pour la barre de recherche, les filtres, le bouton d'ajout, et le bouton de telechargement-->
+    <!--Tableau contenant les données-->      
+    <table class="table table-hover table-reponsive">
+      <thead>
+        <!--En-tete du tableau-->
+        <tr class="bg-success text-light">
+          <th>Annee_exercice</th>
+          <th>Nomenclature</th>
+          <th>Numero_folio_grand_livre</th>
+          <th>Designation_materiels</th>
+          <th>Especes_des_unites</th>
+          <th>Prix_unites</th>
+          <th>Quantite_existant_1er_janvier</th>
+          <th>Quantite_entree_pendant_l_annee</th>
+          <th>Quantite_sortie_pendant_l_annee</th>
+          <th>Quantite_reste_31_decembre</th>
+          <th>Decompte</th>
+          <th>Observations</th>
+        </tr>
+      </thead>
+    <tbody id="tbody"> 
+        <!--Recuperation de tout les données dans le table-->
+            {% for inventaire in inventaires %}
+                <tr id="liste" class="table-bordered">
+                    <td> {{ inventaire.Annee_exercice }} </td>
+                    <td>{{ inventaire.Nomenclature }}</td>
+                    <td>{{ inventaire.Numero_folio_grand_livre }}</td>
+                    <td>{{ inventaire.Designation_materiels }}</td>
+                    <td>{{ inventaire.Especes_des_unites }}</td>
+                    <td>{{ inventaire.Prix_de_l_unite }}</td>
+                    <td>{{ inventaire.Quantite_existant_1er_janvier }}</td>
+                    <td> {{ inventaire.Quantite_entree_pendant_l_annee }} </td>
+                    <td>{{ inventaire.Quantite_sortie_pendant_l_annee }}</td>
+                    <td>{{ inventaire.Quantite_reste_31_decembre }}</td>
+                    <td>{{ inventaire.Decompte }}</td>
+                    <td>{{ inventaire.Observation }}</td>
+                </tr>
+            {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <!--Affichage du total general-->
+            <th colspan="10">TOTAL GENERAL</th>
+            <th> {{ Total_general.total_decompte }} </th>
+        </tr>
+    </tfoot>
+    </table>
+        <div class="pagination pagination-sm">
+                    {% if page_obj.has_previous %}
+                        <a class="page-link" href="?page=1">&laquo;first</a>
+                        <a class="page-link" href="?page={{ page_object.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">
+                        Page {{ page_obj.number }} sur {{ page_object.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a class="page-link" href="?page={{ page_object.next_page_number }}">next</a>
+                        <a class="page-link" href="?page={{ page_object.paginator.num_pages }}">last &raquo;</a>
+                    {% endif%}
+        </div>
+    <!--Fin Tableau contenant les données--> 
+    <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'patrimoine/js/jquery.min.js' %}"></script>
+    <script>
+        //fonction pour la barre de recherche
+      $(document).ready(function() {
+        console.log("jQuery is working!");
+
+        $("#Search").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#tbody tr").each(function() {
+              var isVisible = $(this).text().toLowerCase().indexOf(value) > -1;
+              console.log($(this).text(), isVisible);  // Affiche le texte de la ligne et si elle sera visible ou non
+              $(this).toggle(isVisible);
+          });
+        });
+      });   
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl)
+})
+    </script>
+</body>

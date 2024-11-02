@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ajout - Attestation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'patrimoine/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    <div class="container shadow p-5" style="width:50%;">
+        <form method="POST" class="m-5">
+            <h1 class="text-center" style="font-size: 25px;">Ajout Attestation de prise en Charge</h1>
+            {% csrf_token %}
+            <div class="mb-3 mt-3">
+              <label for="Annee_exercice" class="form-label">Annee_exercice:</label>
+              <input type="text" class="form-control" id="Annee_exercice" placeholder="Annee_exercice" name="Annee_exercice">
+            </div>
+            <div class="mb-3">
+              <label for="Nomenclature" class="form-label">Nomenclature:</label>
+              <input type="number" class="form-control" id="Nomenclature" placeholder="Nomenclature" name="Nomenclature">
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="Designation_des_matieres_et_objets" class="form-label">Designation_des_matieres_et_objets:</label>
+              <input type="text" class="form-control" id="Designation_des_matieres_et_objets" placeholder="Designation_des_matieres_et_objets" name="Designation_des_matieres_et_objets">
+            </div>
+            <div class="mb-3">
+              <label for="Especes_des_unites" class="form-label">Especes des unites:</label>
+              <input type="text" class="form-control" id="Especes_des_unites" placeholder="Especes_des_unites" name="Especes_des_unites">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Quantite" class="form-label">Quantite:</label>
+                <input type="number" class="form-control" value="0" id="Quantite" placeholder="Quantite" name="Quantite">
+              </div>
+            <div class="mb-3 mt-3">
+                <label for="Prix_unite" class="form-label">Prix_unite:</label>
+                <input type="number" onkeyup="CalculMontant()" value="0.00" class="form-control" id="Prix_unite" placeholder="Prix_unite" name="Prix_unite">
+              </div>
+              <div class="mb-3">
+                <label for="Montant" class="form-label">Montant:</label>
+                <input type="number" class="form-control" id="Montant" placeholder="Montant" name="Montant">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Observations" class="form-label">Observations:</label>
+                <input type="text" class="form-control" id="Observations" placeholder="Observations" name="Observations">
+              </div>
+            <div class="mb-3 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'attestation' service.id %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>    
+    </div>
+    <script>
+      //fonction pour calculer la valeur du Montant
+        function CalculMontant() {
+            var quantite = Number(document.querySelector('#Quantite').value) || 0;
+            var prix = Number(document.querySelector('#Prix_unite').value) || 0;
+        
+            document.querySelector('#Montant').value = (quantite * prix).toFixed(2);
+        }
+    </script>
+</body>
+</html>

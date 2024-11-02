@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Récapitulatif de l'Inventaire</title>
+    <link href="{% static 'patrimoine/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'patrimoine/css/all.min.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TABLEAU RÉCAPITULATIFS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars text-light"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar1">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'afficher_regions' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'pv_recensement' service.id %}">PV Recensement</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'pv_evaluation' service.id %}">PV Recensement</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'etat_appreciatif' service.id %}">État Appréciatif</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'inventaire' service.id %}">Inventaire</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'ordre_entree' service.id %}">Ordre d'entrée</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'ordre_sortie' service.id %}">Ordre de sortie</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'attestation' service.id %}">Attestation</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{% url 'recapitulatif_inventaire' service.id %}">Récapitulatifs</a></li>
+                </ul>
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'logout' %}" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Se déconnecter">
+                          <i class="fas fa-user p-2" style="border:1px solid; border-radius: 50%;"></i>
+                      </a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid bar row mt-5">
+        <div class="filter col d-flex flex-row" style="height: 5vh;">
+            <input type="text" class="form-control" style="width: 50%;" id="Search" placeholder="Recherche..." name="search">
+        </div>
+        <div class="col d-flex flex-row">
+          <form method="get" action="" id="global-filters-form">
+            <label for="nomenclature">Nomenclature :</label>
+            <select name="nomenclature" id="nomenclature" onchange="document.getElementById('global-filters-form').submit();">
+                <option value="">Tous</option>
+                {% for nomenclature in nomenclature_list %}
+                    <option value="{{ nomenclature }}" {% if selected_nomenclature == nomenclature|stringformat:"s" %}selected{% endif %}>
+                        {{ nomenclature }}
+                    </option>
+                {% endfor %}
+            </select>
+            <label for="annee_exercice">Année d'exercice :</label>
+            <select name="annee_exercice" id="annee_exercice" onchange="document.getElementById('global-filters-form').submit();">
+                <option value="">Tous</option>
+                {% for annee in annee_exercice_list %}
+                    <option value="{{ annee }}" {% if selected_annee_exercice == annee|stringformat:"s" %}selected{% endif %}>
+                        {{ annee }}
+                    </option>
+                {% endfor %}
+            </select>
+          </form>
+        </div>
+    </div>
+
+    <!-- Table Inventaire -->
+    <div class="container-fluid mt-5">
+        <h1>Récapitulatif de l'Inventaire</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nomenclature</th>
+                    <th>Valeur Totale (en Ariary)</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                {% for item in recap_inventaire %}
+                <tr>
+                    <td>{{ item.Nomenclature }}</td>
+                    <td>{{ item.total_valeur|floatformat:2 }} Ar</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>TOTAUX</th>
+                    <th>{{ total_general.total_nomenclature|floatformat:2 }} Ar</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Table État Appréciatif -->
+    <div class="container-fluid mt-5">
+        <h1>Récapitulatif de l'État Appréciatif</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>NUMÉROS DE LA NOMENCLATURE</th>
+                    <th>EXISTANT AU PREMIER JANVIER</th>
+                    <th>ENTRÉES PENDANT L'ANNÉE</th>
+                    <th>TOTAL EXISTANT + ENTRÉES</th>
+                    <th>SORTIES PENDANT L'ANNÉE</th>
+                    <th>RESTE AU 31 DÉCEMBRE</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                {% for item in recap_etatappreciatif %}
+                <tr>
+                    <td>{{ item.Nomenclature }}</td>
+                    <td>{{ item.total_prix_janvier|floatformat:0 }}</td>
+                    <td>{{ item.total_entrees_annee|floatformat:0 }}</td>
+                    <td>{{ item.total_existant_et_entrees|floatformat:0 }}</td>
+                    <td>{{ item.total_sorties|floatformat:0 }}</td>
+                    <td>{{ item.total_reste|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>TOTAL</th>
+                    <th>{{ total_general.total_prix_janvier|floatformat:0 }}</th>
+                    <th>{{ total_general.total_entrees_annee|floatformat:0 }}</th>
+                    <th>{{ total_general.total_existant_et_entrees|floatformat:0 }}</th>
+                    <th>{{ total_general.total_sorties|floatformat:0 }}</th>
+                    <th>{{ total_general.total_reste|floatformat:0 }}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script src="{% static 'patrimoine/js/jquery.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $("#Search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".tbody tr").each(function() {
+                    $(this).toggle($(this).text().toLowerCase().includes(value));
+                });
+            });
+        });
+    </script>
+</body>
+</html>

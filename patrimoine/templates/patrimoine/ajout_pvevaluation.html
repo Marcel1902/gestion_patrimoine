@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ajout - Recensement</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'patrimoine/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    <div class="container shadow p-5" style="width:50%;">
+        <form method="POST" class="m-5">
+            <h1 class="text-center" style="font-size: 25px;">Ajout d'un PV de recensement</h1>
+            {% csrf_token %}
+            <div class="mb-3 mt-3">
+              <label for="Budget" class="form-label">Budget:</label>
+              <input type="text" class="form-control" id="Budget" placeholder="Budget" name="Budget">
+            </div>
+            <div class="mb-3">
+              <label for="imputation_administrative" class="form-label">Imputation administrative:</label>
+              <input type="text" class="form-control" id="imputation_administrative" placeholder="imputation_administrative" name="imputation_administrative">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_du_chapitre" class="form-label">Designation_chapitre:</label>
+                <input type="text" class="form-control" id="Designation_du_chapitre" placeholder="Designation_du_chapitre" name="Designation_du_chapitre">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="libelle_article" class="form-label">Libelle_article:</label>
+                <input type="text" class="form-control" id="libelle_article" placeholder="libelle_article" name="libelle_article">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="President_commission_recensement" class="form-label">President_commission_recensement:</label>
+                <input type="text" class="form-control" id="President_commission_recensement" placeholder="President_commission_recensement" name="President_commission_recensement">
+              </div>
+              <div class="mb-3">
+                <label for="Membres" class="form-label">Membres:</label>
+                <input type="text" class="form-control" id="Membres" placeholder="Membres" name="Membres">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Nom_et_qualite_du_depositaire_comptable" class="form-label">Nom_et_qualite_du_depositaire_comptable:</label>
+                <input type="text" class="form-control" id="Nom_et_qualite_du_depositaire_comptable" placeholder="Nom_et_qualite_du_depositaire_comptable" name="Nom_et_qualite_du_depositaire_comptable">
+              </div>
+            <div class="mb-3 mt-3">
+              <label for="exercice" class="form-label">Année d'exercice:</label>
+              <input type="text" class="form-control" id="exercice" placeholder="Année de l'exercice" name="exercice">
+            </div>
+            <div class="mb-3">
+              <label for="Nomenclature" class="form-label">Nomenclature:</label>
+              <input type="number" class="form-control" id="Nomenclature" placeholder="Numero de la Nomenclature" name="Nomenclature">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Numero_ordre" class="form-label">Numero d'ordre:</label>
+                <input type="text" class="form-control" id="Numero_ordre" placeholder="Numero_ordre" name="Numero_ordre">
+              </div>
+            <div class="mb-3 mt-3">
+                <label for="Designations_des_articles" class="form-label">Designations_des_articles:</label>
+                <input type="text" class="form-control" id="Designations_des_articles" placeholder="" name="Designations_des_articles">
+              </div>
+              <div class="mb-3">
+                <label for="Especes_des_unites" class="form-label">Especes_des_unites:</label>
+                <input type="text" class="form-control" id="Especes_des_unites" placeholder="Especes_des_unites" name="Especes_des_unites">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Prix_unitaire" class="form-label">Prix_unitaire:</label>
+                <input type="number" value="0.00" class="form-control" id="Prix_unitaire" placeholder="Prix unitaire" name="Prix_unitaire">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Quantite" class="form-label">Quantites:</label>
+                <input value="0" onkeyup="setMontant()" type="number" class="form-control" id="Quantite" placeholder="Quantites" name="Quantite">
+              </div>
+              <div class="mb-3">
+                <label for="Montant" class="form-label">Montant:</label>
+                <input type="number" value="0.00" class="form-control" id="Montant" placeholder="Montant" name="Montant">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Observations" class="form-label">Observations:</label>
+                <input type="text" class="form-control" id="Observations" value="0.00" placeholder="Observations" name="Observations">
+              </div>
+            <div class="mb-3 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'pv_evaluation' service.id %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>
+    </div>
+    <script>
+
+        function setMontant() {
+          var quantite = document.querySelector('#Quantite');
+          var prix = document.querySelector('#Prix_unitaire');
+
+          Montant.value = Number(quantite.value) * Number(prix.value);
+      }
+    </script>
+</body>
+</html>

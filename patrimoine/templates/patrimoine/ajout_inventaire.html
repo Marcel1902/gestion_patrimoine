@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ajout - Inventaire</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'patrimoine/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    <div class="container shadow p-5" style="width:50%;">
+        <form method="POST" class="m-5">
+            <h1 class="text-center" style="font-size: 25px;">Ajout Inventaire</h1>
+            {% csrf_token %}
+            <div class="mb-3 mt-3">
+              <label for="Budget" class="form-label">Budget:</label>
+              <input type="text" class="form-control" id="Budget" placeholder="Budget" name="Budget">
+            </div>
+            <div class="mb-3">
+              <label for="imputation_administrative" class="form-label">Imputation administrative:</label>
+              <input type="text" class="form-control" id="imputation_administrative" placeholder="imputation_administrative" name="imputation_administrative">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_du_chapitre" class="form-label">Designation_du_chapitre:</label>
+                <input type="text" class="form-control" id="Designation_du_chapitre" placeholder="Designation_du_chapitre" name="Designation_du_chapitre">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="libelle_article" class="form-label">Libelle_article:</label>
+                <input type="text" class="form-control" id="libelle_article" placeholder="libelle_article" name="libelle_article">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Nom_et_qualite_du_recenseur" class="form-label">Nom_et_qualite_du_recenseur:</label>
+                <input type="text" class="form-control" id="Nom_et_qualite_du_recenseur" placeholder="Nom_et_qualite_du_recenseur" name="Nom_et_qualite_du_recenseur">
+              </div>
+              <div class="mb-3">
+                <label for="Nom_et_qualite_du_depositaire_comptable" class="form-label">Nom_et_qualite_du_depositaire_comptable:</label>
+                <input type="text" class="form-control" id="Nom_et_qualite_du_depositaire_comptable" placeholder="Nom_et_qualite_du_depositaire_comptable" name="Nom_et_qualite_du_depositaire_comptable">
+              </div>
+            <div class="mb-3 mt-3">
+              <label for="exercice" class="form-label">Année d'exercice:</label>
+              <input type="text" class="form-control" id="exercice" placeholder="Année de l'exercice" name="exercice">
+            </div>
+            <div class="mb-3">
+              <label for="Nomenclature" class="form-label">Nomenclature:</label>
+              <input type="number" class="form-control" id="Nomenclature" placeholder="Numero de la Nomenclature" name="Nomenclature">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Numero_folio_grand_livre" class="form-label">Numero folio du grand livre:</label>
+                <input type="number" class="form-control" id="Numero_folio_grand_livre" placeholder="Numero folio du grand livre" name="Numero_folio_grand_livre">
+              </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_materiels" class="form-label">Designation_materiels:</label>
+                <input type="text" class="form-control" id="Designation_materiels" placeholder="Designation materiels" name="Designation_materiels">
+              </div>
+              <div class="mb-3">
+                <label for="Especes_des_unites" class="form-label">Especes_des_unites:</label>
+                <input type="text" class="form-control" id="Especes_des_unites" placeholder="Especes_des_unites" name="Especes_des_unites">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Prix_de_l_unite" class="form-label">Prix de l'unite:</label>
+                <input type="number" class="form-control" id="Prix_de_l_unite" value="0.00" placeholder="Prix de l'unite" name="Prix_de_l_unite">
+              </div>
+              <div class="mb-3">
+                <label for="Quantite_existant_1er_janvier" class="form-label">Quantite existant au 1er janvier:</label>
+                <input type="number" class="form-control" value="0" id="Quantite_existant_1er_janvier" placeholder="Quantite_existant_1er_janvier" name="Quantite_existant_1er_janvier">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Quantite_entree_pendant_l_annee" class="form-label">Quantite entree pendant l'annee:</label>
+                <input type="number" class="form-control" value="0" id="Quantite_entree_pendant_l_annee" placeholder="Quantite entree pendant l'annee" name="Quantite_entree_pendant_l_annee">
+              </div>
+              <div class="mb-3">
+                <label for="Quantite_sortie_pendant_l_annee" class="form-label">Quantite sortie pendant l'annee:</label>
+                <input onkeyup="CalculReste()" type="number" class="form-control" id="Quantite_sortie_pendant_l_annee" placeholder="Quantite sortie pendant l'annee" name="Quantite_sortie_pendant_l_annee">
+              </div>
+              <div class="mb-3">
+                <label for="Quantite_reste_31_decembre" class="form-label">Quantite_reste_31_decembre:</label>
+                <input type="number" onchange="Decompte()" class="form-control" id="Quantite_reste_31_decembre" value="0" placeholder="Quantite_reste_31_decembre" name="Quantite_reste_31_decembre">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Decompte" class="form-label">Decompte:</label>
+                <input type="number" class="form-control" id="Decompte" value="0.00" placeholder="Decompte" name="Decompte">
+              </div>
+              <div class="mb-3">
+                <label for="Observation" class="form-label">Observation:</label>
+                <input type="text" class="form-control" id="Observation" placeholder="Observation" name="Observation">
+              </div>
+            <div class="mb-3 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'inventaire' service.id %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>    
+    </div>
+    <script>
+      function CalculReste() {
+        var existant = Number(document.querySelector('#Quantite_existant_1er_janvier').value) || 0;
+        var entrees = Number(document.querySelector('#Quantite_entree_pendant_l_annee').value) || 0;
+        var sorties = Number(document.querySelector('#Quantite_sortie_pendant_l_annee').value) || 0;
+    
+        var reste = (existant + entrees - sorties);
+        document.querySelector('#Quantite_reste_31_decembre').value = reste;
+    
+        // Appeler la fonction Decompte pour mettre à jour automatiquement le champ "Decompte"
+        Decompte();
+    }
+    
+    function Decompte() {
+        var reste = Number(document.querySelector('#Quantite_reste_31_decembre').value) || 0;
+        var prix = Number(document.querySelector('#Prix_de_l_unite').value) || 0;
+    
+        document.querySelector('#Decompte').value = (reste * prix).toFixed(2);
+    }
+    
+    </script>
+</body>
+</html>

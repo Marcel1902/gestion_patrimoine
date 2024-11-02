@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ajout - Recensement</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'patrimoine/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    <div class="container shadow p-5" style="width:50%;">
+        <form method="POST" class="m-5">
+            <h1 class="text-center" style="font-size: 25px;">Ajout d'un PV de recensement</h1>
+            {% csrf_token %}
+            <div class="mb-3 mt-3">
+              <label for="Budget" class="form-label">Budget:</label>
+              <input type="text" class="form-control" id="Budget" placeholder="Budget" name="Budget">
+            </div>
+            <div class="mb-3">
+              <label for="Imputation_administrative" class="form-label">Imputation administrative:</label>
+              <input type="text" class="form-control" id="Imputation_administrative" placeholder="Imputation_administrative" name="Imputation_administrative">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_chapitre" class="form-label">Designation_chapitre:</label>
+                <input type="text" class="form-control" id="Designation_chapitre" placeholder="Designation_chapitre" name="Designation_chapitre">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Libelle_article" class="form-label">Libelle_article:</label>
+                <input type="text" class="form-control" id="Libelle_article" placeholder="Especes des unités" name="Libelle_article">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Designation_magasin_ou_materiels_service" class="form-label">Designation_magasin_ou_materiels_service:</label>
+                <input type="text" class="form-control" id="Designation_magasin_ou_materiels_service" placeholder="Designation_magasin_ou_materiels_service" name="Designation_magasin_ou_materiels_service">
+              </div>
+              <div class="mb-3">
+                <label for="Nom_et_qualite_recenseur" class="form-label">Nom_et_qualite_recenseur:</label>
+                <input type="text" class="form-control" id="Nom_et_qualite_recenseur" placeholder="Nom_et_qualite_recenseur" name="Nom_et_qualite_recenseur">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Nom_et_qualite_depositaire_comptable" class="form-label">Nom_et_qualite_depositaire_comptable:</label>
+                <input type="text" class="form-control" id="Nom_et_qualite_depositaire_comptable" placeholder="Nom_et_qualite_depositaire_comptable" name="Nom_et_qualite_depositaire_comptable">
+              </div>
+            <div class="mb-3 mt-3">
+              <label for="exercice" class="form-label">Année d'exercice:</label>
+              <input type="text" class="form-control" id="exercice" placeholder="Année de l'exercice" name="exercice">
+            </div>
+            <div class="mb-3">
+              <label for="Nomenclature" class="form-label">Nomenclature:</label>
+              <input type="number" class="form-control" id="Nomenclature" placeholder="Numero de la Nomenclature" name="Nomenclature">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_materiels" class="form-label">Designation des materiels et objets:</label>
+                <input type="text" class="form-control" id="Designation_materiels" placeholder="Designation des materiels et objets" name="Designation_materiels">
+              </div>
+            <div class="mb-3 mt-3">
+                <label for="especes" class="form-label">Espèces des unités:</label>
+                <input type="text" class="form-control" id="especes" placeholder="Especes des unités" name="especes">
+              </div>
+              <div class="mb-3">
+                <label for="prix" class="form-label">Prix de l'unité:</label>
+                <input type="number" class="form-control" id="prix" value="0.00" placeholder="Prix de l'unité" name="prix">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="quantite_ecriture" class="form-label">Quantité existant d'après ecriture:</label>
+                <input onkeyup="setValeurExistantArticle()" type="number" class="form-control" id="quantite_ecriture" placeholder="Quantité existant d'après ecriture" name="quantite_ecriture">
+              </div>
+              <div class="mb-3">
+                <label for="quantite_recensement" class="form-label">Quantité constaté par recensement:</label>
+                <input type="number" class="form-control" value="0" id="quantite_recensement" placeholder="Quantité constaté par recensement" name="quantite_recensement">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="excedent_article" class="form-label">Quantites execedent par article:</label>
+                <input onkeyup="setValeurExcedentArticle()" type="number" class="form-control" id="excedent_article" placeholder="Quantites execedent par article" name="excedent_article">
+              </div>
+              <div class="mb-3">
+                <label for="deficient_article" class="form-label">Quantités deficient par article:</label>
+                <input onkeyup="setValeurDeficitArticle()" type="number" class="form-control" id="deficient_article" placeholder="Quantités deficient par article" name="deficient_article">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="valeurs_excedents_par_article" class="form-label">valeurs excedents par article:</label>
+                <input type="number" class="form-control" id="valeurs_excedents_par_article" value="0.00" placeholder="valeurs excedents par article" name="valeurs_excedents_par_article">
+              </div>
+              <div class="mb-3">
+                <label for="valeurs_excedents_par_nomenclature" class="form-label">valeurs excedents par nomenclature:</label>
+                <input type="number" class="form-control" id="valeurs_excedents_par_nomenclature" value="0.00" placeholder="valeurs excedents par nomenclature" name="valeurs_excedents_par_nomenclature">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="valeurs_deficits_par_article" class="form-label">valeurs deficits par article:</label>
+                <input type="number" class="form-control" id="valeurs_deficits_par_article" value="0.00" placeholder="valeurs deficits par article" name="valeurs_deficits_par_article">
+              </div>
+              <div class="mb-3">
+                <label for="valeurs_des_deficits_par_nomenclature" class="form-label">valeurs des deficits par nomenclature:</label>
+                <input type="number" class="form-control" id="valeurs_des_deficits_par_nomenclature" value="0.00" placeholder="valeurs des deficits par nomenclature" name="valeurs_des_deficits_par_nomenclature">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="valeurs_des_existants" class="form-label">valeurs des existants:</label>
+                <input type="number" class="form-control" id="valeurs_des_existants" value="0.00" placeholder="valeurs des existants" name="valeurs_des_existants">
+              </div>
+              <div class="mb-3">
+                <label for="Observations" class="form-label">Observations:</label>
+                <input type="text" class="form-control" id="Observations" placeholder="Observations" name="Observations">
+              </div>
+            <div class="mb-3 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'pv_recensement' service.id %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>    
+    </div>
+    <script>
+        function setValeurExcedentArticle() {
+            var quantite_excedent = document.querySelector('#excedent_article');
+            var prix = document.querySelector('#prix');
+    
+            valeurs_excedents_par_article.value = Number(quantite_excedent.value) * Number(prix.value);
+        }
+
+        function setValeurDeficitArticle() {
+            var quantite_deficient = document.querySelector('#deficient_article');
+            var prix = document.querySelector('#prix');
+    
+            valeurs_deficits_par_article.value = Number(quantite_deficient.value) * Number(prix.value);
+        }
+
+        function setValeurExistantArticle() {
+          var quantite_existant = document.querySelector('#quantite_ecriture');
+          var prix = document.querySelector('#prix');
+  
+          valeurs_des_existants.value = Number(quantite_existant.value) * Number(prix.value);
+      }
+    </script>
+</body>
+</html>

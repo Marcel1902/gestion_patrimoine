@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ajout - Ordre entrée</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'patrimoine/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    <div class="container shadow p-5" style="width:50%;">
+        <form method="POST" class="m-5">
+            <h1 class="text-center" style="font-size: 25px;">Ajout Ordre d'entreé</h1>
+            {% csrf_token %}
+            <div class="mb-3 mt-3">
+              <label for="Budget" class="form-label">Budget:</label>
+              <input type="text" class="form-control" id="Budget" placeholder="Budget" name="Budget">
+            </div>
+            <div class="mb-3">
+              <label for="imputation_administrative" class="form-label">Imputation administrative:</label>
+              <input type="text" class="form-control" id="imputation_administrative" placeholder="imputation_administrative" name="imputation_administrative">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_du_chapitre" class="form-label">Designation_du_chapitre:</label>
+                <input type="text" class="form-control" id="Designation_du_chapitre" placeholder="Designation_du_chapitre" name="Designation_du_chapitre">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="libelle_article" class="form-label">libelle_article:</label>
+                <input type="text" class="form-control" id="libelle_article" placeholder="libelle_article" name="libelle_article">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Subdivision_du_chapitre" class="form-label">Subdivision_du_chapitre:</label>
+                <input type="text" class="form-control" id="Subdivision_du_chapitre" placeholder="Subdivision_du_chapitre" name="Subdivision_du_chapitre">
+              </div>
+              <div class="mb-3">
+                <label for="Numero_du_journal" class="form-label">Numero_du_journal:</label>
+                <input type="text" class="form-control" id="Numero_du_journal" placeholder="Numero_du_journal" name="Numero_du_journal">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Nom_et_qualite_du_depositaire_comptable" class="form-label">Nom_et_qualite_du_depositaire_comptable:</label>
+                <input type="text" class="form-control" id="Nom_et_qualite_du_depositaire_comptable" placeholder="Nom_et_qualite_du_depositaire_comptable" name="Nom_et_qualite_du_depositaire_comptable">
+              </div>
+            <div class="mb-3 mt-3">
+              <label for="Annee_exercice" class="form-label">Année d'exercice:</label>
+              <input type="text" class="form-control" id="Annee_exercice" placeholder="Année de l'exercice" name="Annee_exercice">
+            </div>
+            <div class="mb-3">
+              <label for="Nomenclature" class="form-label">Nomenclature:</label>
+              <input type="number" class="form-control" id="Nomenclature" placeholder="Nomenclature" name="Nomenclature">
+            </div>
+            <div class="mb-3">
+                <label for="Numero_folio_du_grandlivre" class="form-label">Numero folio du grandlivre:</label>
+                <input type="number" class="form-control" id="Numero_folio_du_grandlivre" placeholder="Numero folio du grand livre" name="Numero_folio_du_grandlivre">
+              </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_des_matieres_et_objets" class="form-label">Designation des matieres et objets:</label>
+                <input type="text" class="form-control" id="Designation_des_matieres_et_objets" placeholder="Designation des matieres et objets" name="Designation_des_matieres_et_objets">
+              </div>
+            <div class="mb-3 mt-3">
+                <label for="Especes_des_unites" class="form-label">Especes des unites:</label>
+                <input type="text" class="form-control" id="Especes_des_unites" placeholder="Especes_des_unites" name="Especes_des_unites">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Quantites" class="form-label">Quantites:</label>
+                <input type="number" class="form-control" id="Quantites" value="0" placeholder="Quantites" name="Quantites">
+              </div>
+              <div class="mb-3">
+                <label for="Prix_unite" class="form-label">Prix_unite:</label>
+                <input type="number" onkeyup="ValeursPartielles()" class="form-control" id="Prix_unite" value="0.00" placeholder="Prix unite" name="Prix_unite">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Valeurs_partielles" class="form-label">Valeurs partielles:</label>
+                <input type="number" class="form-control" id="Valeurs_partielles" value="0.00" placeholder="Valeurs partielles" name="Valeurs_partielles">
+              </div>
+              <div class="mb-3">
+                <label for="Valeurs_par_numero_nomenclature" class="form-label">Valeurs par numero nomenclature:</label>
+                <input type="number" class="form-control" value="0.00" id="Valeurs_par_numero_nomenclature" placeholder="Valeurs_par_numero_nomenclature" name="Valeurs_par_numero_nomenclature">
+              </div>
+              <div class="mb-3">
+                <label for="Numero_piece_justificative_sortie_correspondante" class="form-label">Numero piece justificative sortie correspondante:</label>
+                <input type="text" class="form-control" id="Numero_piece_justificative_sortie_correspondante" placeholder="Numero piece justificative sortie correspondante" name="Numero_piece_justificative_sortie_correspondante">
+              </div>
+            <div class="mb-3 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'ordre_entree' service.id %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>    
+    </div>
+    <script>
+    
+    function ValeursPartielles() {
+        var quantite = Number(document.querySelector('#Quantites').value) || 0;
+        var prix = Number(document.querySelector('#Prix_unite').value) || 0;
+    
+        document.querySelector('#Valeurs_partielles').value = (quantite * prix).toFixed(2);
+        document.querySelector('#Valeurs_par_numero_nomenclature').value = (quantite * prix).toFixed(2);
+    }
+    
+    </script>
+</body>
+</html>

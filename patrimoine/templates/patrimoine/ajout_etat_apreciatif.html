@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ajout - Etat appreciatif</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'patrimoine/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    <div class="container shadow p-5" style="width:50%;">
+        <form method="POST" class="m-5">
+            <h1 class="text-center" style="font-size: 25px;">Ajout Etat apréciatif</h1>
+            {% csrf_token %}
+            <div class="mb-3 mt-3">
+              <label for="Budget" class="form-label">Budget:</label>
+              <input type="text" class="form-control" id="Budget" placeholder="Budget" name="Budget">
+            </div>
+            <div class="mb-3">
+              <label for="Materiel_en_approvisionnement_ou_en_service" class="form-label">Materiel_en_approvisionnement_ou_en_service:</label>
+              <input type="text" class="form-control" id="Materiel_en_approvisionnement_ou_en_service" placeholder="Materiel_en_approvisionnement_ou_en_service" name="Materiel_en_approvisionnement_ou_en_service">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Designation_du_chapitre" class="form-label">Designation_du_chapitre:</label>
+                <input type="text" class="form-control" id="Designation_du_chapitre" placeholder="Designation_du_chapitre" name="Designation_du_chapitre">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="libelle_article" class="form-label">Libelle_article:</label>
+                <input type="text" class="form-control" id="libelle_article" placeholder="libelle_article" name="libelle_article">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Subdivision_du_magasin_ou_de_la_categorie_du_materiel_en_service" class="form-label">Designation_magasin_ou_materiels_service:</label>
+                <input type="text" class="form-control" id="Subdivision_du_magasin_ou_de_la_categorie_du_materiel_en_service" placeholder="Subdivision_du_magasin_ou_de_la_categorie_du_materiel_en_service" name="Subdivision_du_magasin_ou_de_la_categorie_du_materiel_en_service">
+              </div>
+              <div class="mb-3">
+                <label for="Nombre_en_toutes_lettres" class="form-label">Nombre_en_toutes_lettres:</label>
+                <input type="text" class="form-control" id="Nombre_en_toutes_lettres" placeholder="Nombre_en_toutes_lettres" name="Nombre_en_toutes_lettres">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Nom_et_qualite_du_depositaire_comptable" class="form-label">Nom_et_qualite_du_depositaire_comptable:</label>
+                <input type="text" class="form-control" id="Nom_et_qualite_du_depositaire_comptable" placeholder="Nom_et_qualite_du_depositaire_comptable" name="Nom_et_qualite_du_depositaire_comptable">
+              </div>
+            <div class="mb-3 mt-3">
+              <label for="Annee_exercice" class="form-label">Année d'exercice:</label>
+              <input type="text" class="form-control" id="Annee_exercice" placeholder="Année de l'exercice" name="Annee_exercice">
+            </div>
+            <div class="mb-3">
+              <label for="Nomenclature" class="form-label">Nomenclature:</label>
+              <input type="number" class="form-control" id="Nomenclature" placeholder="Numero de la Nomenclature" name="Nomenclature">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="Numero_du_piece_justificative" class="form-label">Numero du piece justificative:</label>
+                <input type="text" class="form-control" id="Numero_du_piece_justificative" placeholder="Numero_du_piece_justificative" name="Numero_du_piece_justificative">
+              </div>
+            <div class="mb-3 mt-3">
+                <label for="Date_du_piece_justificative" class="form-label">Date du piece justificative:</label>
+                <input type="date" class="form-control" id="Date_du_piece_justificative" placeholder="Date du piece justificative" name="Date_du_piece_justificative">
+              </div>
+              <div class="mb-3">
+                <label for="Designations_sommaire_des_operations" class="form-label">Designations sommaire des operations:</label>
+                <input type="text" class="form-control" id="Designations_sommaire_des_operations" placeholder="Designations sommaire des operations" name="Designations_sommaire_des_operations">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="Charge" class="form-label">Charge:</label>
+                <input type="number" class="form-control" value="0.00" id="Charge" placeholder="Quantité existant d'après ecriture" name="Charge">
+              </div>
+              <div class="mb-3">
+                <label for="Decharge" class="form-label">Decharge:</label>
+                <input type="number" class="form-control" value="0.00" id="Decharge" placeholder="Decharge" name="Decharge">
+              </div>
+            <div class="mb-3 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'etat_appreciatif' service.id %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>    
+    </div>
+    <script>
+        function setValeurExcedentArticle() {
+            var quantite_excedent = document.querySelector('#excedent_article');
+            var prix = document.querySelector('#prix');
+    
+            valeurs_excedents_par_article.value = Number(quantite_excedent.value) * Number(prix.value);
+        }
+
+        function setValeurDeficitArticle() {
+            var quantite_deficient = document.querySelector('#deficient_article');
+            var prix = document.querySelector('#prix');
+    
+            valeurs_deficits_par_article.value = Number(quantite_deficient.value) * Number(prix.value);
+        }
+
+        function setValeurExistantArticle() {
+          var quantite_existant = document.querySelector('#quantite_ecriture');
+          var prix = document.querySelector('#prix');
+  
+          valeurs_des_existants.value = Number(quantite_existant.value) * Number(prix.value);
+      }
+    </script>
+</body>
+</html>

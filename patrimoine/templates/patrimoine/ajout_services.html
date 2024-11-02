@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Accueil</title>
+  <meta charset="utf-8">
+  <link href="{% static 'ecole/assets/images/logos.png' %}" rel="shortcut icon"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'patrimoine/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'patrimoine/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'patrimoine/css/region.css' %}">
+  <script src="{% static 'patrimoine/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3 mt-3">
+              <input type="hidden" class="form-control" id="region" value="{{ region.Nom }}" name="region">
+            </div>
+            <div class="mb-3">
+              <label for="nom" class="form-label">Nom:</label>
+              <input type="text" class="form-control" id="nom" placeholder="Le nom du dossier" name="nom">
+            </div>
+            <div class="mb-3 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'afficher_services' region.id %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
